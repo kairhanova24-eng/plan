@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>План-конспект занятия</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 30px 15px;
+    color: #2d3748;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 50%, #b83280 100%);
+    color: white;
+    padding: 30px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%);
+    animation: shimmer 8s infinite linear;
+  }
+
+  @keyframes shimmer {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header p {
+    font-size: 14px;
+    opacity: 0.9;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+  }
+
+  .content {
+    padding: 35px 40px 45px;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #5a67d8, #b83280);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 30px 0 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .section-title:first-of-type {
+    margin-top: 0;
+  }
+
+  .section-title .icon {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #5a67d8, #b83280);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: white;
+    flex-shrink: 0;
+    -webkit-text-fill-color: white;
+  }
+
+  .form-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    margin-bottom: 10px;
+  }
+
+  .form-table tr {
+    transition: background 0.2s;
+  }
+
+  .form-table tr:hover {
+    background: #f7fafc;
+  }
+
+  .form-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid #edf2f7;
+    vertical-align: top;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .form-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .form-table td:first-child {
+    width: 34%;
+    background: linear-gradient(135deg, #f8fafc, #f0f4ff);
+    font-weight: 600;
+    color: #4a5568;
+    border-right: 1px solid #edf2f7;
+    white-space: normal;
+  }
+
+  .form-table td:last-child {
+    color: #2d3748;
+  }
+
+  .form-table .hint {
+    display: block;
+    font-size: 12px;
+    color: #a0aec0;
+    font-weight: 400;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  input[type="text"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #2d3748;
+    background: #ffffff;
+    transition: all 0.2s;
+    resize: vertical;
+  }
+
+  input[type="text"]:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: #6b46c1;
+    box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.15);
+    background: #fff;
+  }
+
+  input[type="text"]::placeholder,
+  textarea::placeholder {
+    color: #cbd5e0;
+  }
+
+  textarea {
+    min-height: 70px;
+  }
+
+  .tasks-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .task-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .task-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #5a67d8;
+    min-width: 130px;
+    flex-shrink: 0;
+    padding-top: 12px;
+  }
+
+  /* ---- Чекбоксы с возможностью своего варианта ---- */
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #4a5568;
+    background: linear-gradient(135deg, #f8fafc, #f0f4ff);
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1.5px solid #e2e8f0;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .checkbox-item:hover {
+    border-color: #6b46c1;
+    background: linear-gradient(135deg, #ebf0ff, #f3e8ff);
+    transform: translateY(-1px);
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    accent-color: #6b46c1;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .checkbox-item.checked {
+    border-color: #6b46c1;
+    background: linear-gradient(135deg, #ebf0ff, #f3e8ff);
+    color: #5a67d8;
+    font-weight: 600;
+  }
+
+  /* Свой вариант — «капсула» с полем ввода */
+  .custom-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #6b46c1;
+    background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+    padding: 4px 4px 4px 12px;
+    border-radius: 20px;
+    border: 1.5px dashed #b83280;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .custom-option:focus-within {
+    border-style: solid;
+    border-color: #6b46c1;
+    box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.12);
+  }
+
+  .custom-option .pen {
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .custom-option input[type="text"] {
+    border: none;
+    background: transparent;
+    padding: 6px 4px;
+    font-size: 13px;
+    color: #5a67d8;
+    font-weight: 500;
+    min-width: 60px;
+  }
+
+  .custom-option input[type="text"]:focus {
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .custom-option input[type="text"]::placeholder {
+    color: #b794f4;
+    font-weight: 400;
+  }
+
+  .lesson-stages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .stage-card {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .stage-card:hover {
+    box-shadow: 0 4px 16px rgba(107, 70, 193, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .stage-header {
+    background: linear-gradient(135deg, #edf2ff, #f3e8ff, #fce7f3);
+    padding: 10px 16px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #5a67d8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .stage-header .num {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #5a67d8, #b83280);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .stage-body {
+    padding: 12px 16px;
+  }
+
+  .stage-body textarea {
+    min-height: 60px;
+  }
+
+  .time-badge {
+    font-size: 12px;
+    color: #718096;
+    font-weight: 400;
+    margin-left: auto;
+  }
+
+  .footer-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 35px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    flex: 1;
+    min-width: 180px;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #5a67d8, #6b46c1, #b83280);
+    background-size: 200% 200%;
+    color: white;
+    box-shadow: 0 4px 14px rgba(107, 70, 193, 0.4);
+  }
+
+  .btn-primary:hover {
+    background-position: right center;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(184, 50, 128, 0.5);
+  }
+
+  .btn-secondary {
+    background: #ffffff;
+    color: #6b46c1;
+    border: 2px solid #6b46c1;
+  }
+
+  .btn-secondary:hover {
+    background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 600px) {
+    .content { padding: 20px; }
+    .header { padding: 22px 20px; }
+    .header h1 { font-size: 20px; }
+    .form-table td:first-child {
+      width: 40%;
+      font-size: 13px;
+      padding: 10px 12px;
+    }
+    .form-table td { padding: 10px 12px; }
+    .task-row { flex-direction: column; gap: 4px; }
+    .task-label { min-width: auto; padding-top: 0; }
+    .footer-actions { flex-direction: column; }
+    .custom-option { min-width: 100%; }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .container { box-shadow: none; border-radius: 0; }
+    .btn { display: none; }
+    .header {
+      background: linear-gradient(135deg, #5a67d8, #b83280) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .header::before { display: none; }
+    .section-title .icon,
+    .stage-header .num,
+    .stage-header,
+    .form-table td:first-child {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .custom-option {
+      border-style: solid;
+      background: white !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>📋 План-конспект занятия</h1>
+    <p>Педагог дополнительного образования • ЦДТ</p>
+  </div>
+
+  <div class="content">
+
+    <!-- ОБЩИЕ СВЕДЕНИЯ -->
+    <div class="section-title">
+      <span class="icon">1</span> Общие сведения
+    </div>
+
+    <table class="form-table">
+      <tr>
+        <td>ФИО педагога</td>
+        <td><input type="text" placeholder="Иванова Мария Петровна"></td>
+      </tr>
+      <tr>
+        <td>Объединение / направление</td>
+        <td><input type="text" placeholder="«Оригами», художественная направленность"></td>
+      </tr>
+      <tr>
+        <td>Группа, год обучения</td>
+        <td><input type="text" placeholder="Группа №1, 1-й год обучения"></td>
+      </tr>
+      <tr>
+        <td>Дата и время занятия</td>
+        <td><input type="text" placeholder="12.11.2026, 15:00–16:30"></td>
+      </tr>
+      <tr>
+        <td>Тема занятия</td>
+        <td><input type="text" placeholder="Изготовление фигуры «Журавлик» в технике оригами"></td>
+      </tr>
+      <tr>
+        <td>Тип занятия</td>
+        <td>
+          <select id="lessonType" onchange="toggleCustomSelect(this, 'customLessonType')">
+            <option value="">— выберите тип —</option>
+            <option>Изучение нового материала</option>
+            <option>Закрепление и отработка навыков</option>
+            <option>Комбинированное занятие</option>
+            <option>Практическая работа</option>
+            <option>Контрольное / итоговое занятие</option>
+            <option>Игровое занятие</option>
+            <option value="custom">✏️ Свой вариант…</option>
+          </select>
+          <input type="text" id="customLessonType" placeholder="Впишите свой тип занятия" style="display:none; margin-top:8px;">
+        </td>
+      </tr>
+    </table>
+
+    <!-- ЦЕЛЬ И ЗАДАЧИ -->
+    <div class="section-title">
+      <span class="icon">2</span> Цель и задачи
+    </div>
+
+    <table class="form-table">
+      <tr>
+        <td>Цель занятия</td>
+        <td>
+          <textarea placeholder="Научить детей складывать фигуру «Журавлик» в технике оригами..."></textarea>
+          <span class="hint">Что должно быть достигнуто в результате занятия</span>
+        </td>
+      </tr>
+    </table>
+
+    <div class="tasks-grid" style="margin-top: 12px;">
+      <div class="task-row">
+        <span class="task-label">Обучающие:</span>
+        <textarea placeholder="Формировать умение работать по схеме, закрепить базовую форму «квадрат»..." style="min-height: 50px;"></textarea>
+      </div>
+      <div class="task-row">
+        <span class="task-label">Развивающие:</span>
+        <textarea placeholder="Развивать мелкую моторику, пространственное мышление, внимание..." style="min-height: 50px;"></textarea>
+      </div>
+      <div class="task-row">
+        <span class="task-label">Воспитательные:</span>
+        <textarea placeholder="Воспитывать аккуратность, усидчивость, интерес к японскому искусству..." style="min-height: 50px;"></textarea>
+      </div>
+    </div>
+
+    <!-- ОБОРУДОВАНИЕ -->
+    <div class="section-title">
+      <span class="icon">3</span> Оборудование и материалы
+    </div>
+
+    <table class="form-table">
+      <tr>
+        <td>Материалы</td>
+        <td><textarea placeholder="Цветная бумага, клей, ножницы, линейка, карандаш..."></textarea></td>
+      </tr>
+      <tr>
+        <td>Технические средства</td>
+        <td><input type="text" placeholder="Ноутбук, проектор, экран, презентация «История оригами»"></td>
+      </tr>
+      <tr>
+        <td>Дидактические материалы</td>
+        <td><textarea placeholder="Схемы складывания, образец готовой фигуры, карточки с заданиями..."></textarea></td>
+      </tr>
+    </table>
+
+    <!-- ФОРМЫ И МЕТОДЫ -->
+    <div class="section-title">
+      <span class="icon">4</span> Формы и методы работы
+    </div>
+
+    <table class="form-table">
+      <tr>
+        <td>Формы работы</td>
+        <td>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Фронтальная</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Групповая</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Индивидуальная</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Парная</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Практико-ориентированная</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Игровая</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Проектная</label>
+
+            <div class="custom-option">
+              <span class="pen">✏️</span>
+              <input type="text" placeholder="Свой вариант…">
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Методы обучения</td>
+        <td>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Словесный</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Наглядный</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Практический</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Проблемный</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Игровой</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Кейс-метод</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Мозговой штурм</label>
+
+            <div class="custom-option">
+              <span class="pen">✏️</span>
+              <input type="text" placeholder="Свой вариант…">
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- ХОД ЗАНЯТИЯ -->
+    <div class="section-title">
+      <span class="icon">5</span> Ход занятия
+    </div>
+
+    <div class="lesson-stages">
+
+      <div class="stage-card">
+        <div class="stage-header">
+          <span class="num">1</span> Вводная часть
+          <span class="time-badge">⏱ 10 мин</span>
+        </div>
+        <div class="stage-body">
+          <textarea placeholder="Приветствие. Проверка готовности. Обозначение темы и цели занятия. Мотивация: беседа об искусстве оригами, демонстрация готового журавлика..."></textarea>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-header">
+          <span class="num">2</span> Основная часть
+          <span class="time-badge">⏱ 25 мин</span>
+        </div>
+        <div class="stage-body">
+          <textarea placeholder="Объяснение этапов складывания. Показ базовой формы «квадрат». Самостоятельная практическая работа детей по схеме. Индивидуальная помощь педагога. Физкультминутка..."></textarea>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-header">
+          <span class="num">3</span> Заключительная часть
+          <span class="time-badge">⏱ 10 мин</span>
+        </div>
+        <div class="stage-body">
+          <textarea placeholder="Подведение итогов. Выставка готовых работ. Рефлексия: «Что получилось? Что было сложно? Чему научились?» Уборка рабочих мест..."></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- РЕФЛЕКСИЯ -->
+    <div class="section-title">
+      <span class="icon">6</span> Рефлексия и результат
+    </div>
+
+    <table class="form-table">
+      <tr>
+        <td>Планируемый результат</td>
+        <td>
+          <textarea placeholder="Дети умеют складывать фигуру «Журавлик» по схеме, знают базовую форму «квадрат», проявляют аккуратность и интерес..."></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td>Форма рефлексии</td>
+        <td>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Беседа</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Выставка работ</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Самооценка</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> «Смайлики»</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> «Лестница успеха»</label>
+            <label class="checkbox-item"><input type="checkbox" onchange="toggleChecked(this)"> Анкета</label>
+
+            <div class="custom-option">
+              <span class="pen">✏️</span>
+              <input type="text" placeholder="Свой вариант…">
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Самоанализ педагога<br><span class="hint">заполняется после занятия</span></td>
+        <td>
+          <textarea placeholder="Что удалось? Что вызвало трудности? Что изменить в следующий раз?"></textarea>
+        </td>
+      </tr>
+    </table>
+
+    <!-- КНОПКИ -->
+    <div class="footer-actions">
+      <button class="btn btn-primary" onclick="window.print()">
+        🖨 Распечатать / Сохранить в PDF
+      </button>
+      <button class="btn btn-secondary" onclick="clearForm()">
+        🗑 Очистить форму
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Подсветка выбранного чекбокса
+  function toggleChecked(cb) {
+    cb.closest('.checkbox-item').classList.toggle('checked', cb.checked);
+  }
+
+  // Показать/скрыть поле «Свой вариант» для select
+  function toggleCustomSelect(select, customId) {
+    const custom = document.getElementById(customId);
+    if (select.value === 'custom') {
+      custom.style.display = 'block';
+      custom.focus();
+    } else {
+      custom.style.display = 'none';
+      custom.value = '';
+    }
+  }
+
+  // Очистка формы
+  function clearForm() {
+    if (confirm('Очистить все поля формы?')) {
+      document.querySelectorAll('input[type="text"], textarea').forEach(el => el.value = '');
+      document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+        el.checked = false;
+        el.closest('.checkbox-item')?.classList.remove('checked');
+      });
+      document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+      document.getElementById('customLessonType').style.display = 'none';
+    }
+  }
+</script>
+
+</body>
+</html>
